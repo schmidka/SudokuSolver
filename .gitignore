@@ -1,0 +1,16 @@
+# Output directories
+Win32_Release/
+Win32_Debug/
+x64_Release/
+x64_Debug/
+
+# VS artifacts
+*.suo
+*.user
+*.sdf
+*.opensdf
+
+# Build temporaries
+SudokuSolver/Win32/
+SudokuSolver/x64/
+*.obj
