@@ -260,14 +260,36 @@ namespace Sudoku {
   SudokuState read( istream &in ) {
     SudokuState state;
 
-    // For each line, add it to 
-    for ( int row = 0 ; row < 9 ; ++row ) {
+    // This reader is quite permissive as to formatting. Anything not in skip is treated as a
+    // cell data point, anything not a digit is interpreted as an empty cell.
+    string skip(" -|+/\\\n");
+    
+    // Keep consuming input until eof
+    for ( int row = 0; !in.eof() ; ) {
+      bool hasData = false;
+
       string line;
       getline(in, line);
-      for ( int col = 0 ; col < 9 ; ++col ) {
-        char c = line[col];
+
+      // Check each character of the line we read
+      for ( const char *str = line.c_str(), int col = 0 ; *str ; ) {
+        char c = *(str++);
+
+        // If it's in the skiplist, ignore it
+        if ( skip.find_first_of(c) != string::npos ) continue;
+
+        // Else, if it's a digit update the sudoku state
         if ( '1' <= c && c <= '9' ) state.force( Point(row,col), c-'0');
+        
+        hasData = true;
+        ++col;
+        if ( col > 9 ) break;
       }
+
+      // A line in the input is considered specifying a full row in the sudoku if it has at least
+      // one point of data.
+      if ( hasData ) ++row;
+      if ( row > 9 ) break;
     }
     return state;
   }
