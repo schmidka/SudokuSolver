@@ -262,7 +262,7 @@ namespace Sudoku {
 
     // This reader is quite permissive as to formatting. Anything not in skip is treated as a
     // cell data point, anything not a digit is interpreted as an empty cell.
-    string skip(" -|+/\\\n");
+    string skip(" \t-|+/\\\n");
     
     // Keep consuming input until eof
     for ( int row = 0; !in.eof() ; ) {
